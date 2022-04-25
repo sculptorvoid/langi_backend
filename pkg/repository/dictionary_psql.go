@@ -57,8 +57,32 @@ func (r *DictionaryPsql) GetById(userId, dictId int) (entity.Dictionary, error) 
 	var dictionary entity.Dictionary
 	query := fmt.Sprintf(`SELECT dicts.id, dicts.title FROM %s dicts 
  						  INNER JOIN %s userDicts ON dicts.id = userDicts.dict_id 
-						  WHERE userDicts.user_id = $1 AND userDicts.dict_id = $2`, dictionariesTable, usersDictsTable)
+						  WHERE userDicts.user_id = $1 
+						  AND userDicts.dict_id = $2`, dictionariesTable, usersDictsTable)
 	err := r.db.Get(&dictionary, query, userId, dictId)
 
 	return dictionary, err
+}
+
+func (r *DictionaryPsql) Delete(userId, dictId int) error {
+	query := fmt.Sprintf(`DELETE FROM %s dicts USING %s userDicts 
+					      WHERE dicts.id = userDicts.dict_id 
+					      AND userDicts.user_id = $1 
+						  AND userDicts.dict_id = $2`, dictionariesTable, usersDictsTable)
+	_, err := r.db.Exec(query, userId, dictId)
+
+	return err
+}
+
+func (r *DictionaryPsql) Update(userId, dictId int, input entity.UpdateDictionaryInput) error {
+	query := fmt.Sprintf(`UPDATE %s dicts
+ 						  SET title = $1
+						  FROM %s userDicts 
+						  WHERE dicts.id = userDicts.dict_id 
+						  AND userDicts.dict_id=$2 
+						  AND userDicts.user_id=$3`, dictionariesTable, usersDictsTable)
+
+	_, err := r.db.Exec(query, input.Title, dictId, userId)
+
+	return err
 }

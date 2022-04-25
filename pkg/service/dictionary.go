@@ -24,3 +24,15 @@ func (s *DictionaryService) GetAllDictionaries(userId int) ([]entity.Dictionary,
 func (s *DictionaryService) GetById(userId, dictId int) (entity.Dictionary, error) {
 	return s.repo.GetById(userId, dictId)
 }
+
+func (s *DictionaryService) Delete(userId, dictId int) error {
+	return s.repo.Delete(userId, dictId)
+}
+
+func (s *DictionaryService) Update(userId, dictId int, input entity.UpdateDictionaryInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+
+	return s.repo.Update(userId, dictId, input)
+}

@@ -14,6 +14,8 @@ type Dictionary interface {
 	CreateDictionary(userId int, dictionary entity.Dictionary) (int, error)
 	GetAllDictionaries(userId int) ([]entity.Dictionary, error)
 	GetById(userId, dictId int) (entity.Dictionary, error)
+	Delete(userId, dictId int) error
+	Update(userId, dictId int, input entity.UpdateDictionaryInput) error
 }
 
 type Word interface {
