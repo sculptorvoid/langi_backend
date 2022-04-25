@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sculptorvoid/langi_backend/pkg/entity"
 	"net/http"
+	"strconv"
 )
 
 func (h *Handler) createDictionary(c *gin.Context) {
@@ -27,12 +28,46 @@ func (h *Handler) createDictionary(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getAllDictionaries(c *gin.Context) {
+type getAllDictsResponce struct {
+	Data []entity.Dictionary `json:"data"`
+}
 
+func (h *Handler) getAllDictionaries(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	dictionaries, err := h.services.Dictionary.GetAllDictionaries(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllDictsResponce{
+		Data: dictionaries,
+	})
 }
 
 func (h *Handler) getDictionaryById(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
 
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+
+	dictionary, err := h.services.Dictionary.GetById(userId, id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, dictionary)
 }
 
 func (h *Handler) updateDictionary(c *gin.Context) {

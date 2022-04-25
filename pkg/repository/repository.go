@@ -12,6 +12,8 @@ type Authorization interface {
 
 type Dictionary interface {
 	CreateDictionary(userId int, dictionary entity.Dictionary) (int, error)
+	GetAllDictionaries(userId int) ([]entity.Dictionary, error)
+	GetById(userId, dictId int) (entity.Dictionary, error)
 }
 
 type Word interface {

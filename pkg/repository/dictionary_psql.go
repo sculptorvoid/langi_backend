@@ -42,3 +42,23 @@ func (r *DictionaryPsql) CreateDictionary(userId int, dictionary entity.Dictiona
 
 	return id, tx.Commit()
 }
+
+func (r *DictionaryPsql) GetAllDictionaries(userId int) ([]entity.Dictionary, error) {
+	var dictionaries []entity.Dictionary
+	query := fmt.Sprintf(`SELECT dicts.id, dicts.title FROM %s dicts 
+					      INNER JOIN %s userDicts ON dicts.id = userDicts.dict_id 
+						  WHERE userDicts.user_id = $1`, dictionariesTable, usersDictsTable)
+	err := r.db.Select(&dictionaries, query, userId)
+
+	return dictionaries, err
+}
+
+func (r *DictionaryPsql) GetById(userId, dictId int) (entity.Dictionary, error) {
+	var dictionary entity.Dictionary
+	query := fmt.Sprintf(`SELECT dicts.id, dicts.title FROM %s dicts 
+ 						  INNER JOIN %s userDicts ON dicts.id = userDicts.dict_id 
+						  WHERE userDicts.user_id = $1 AND userDicts.dict_id = $2`, dictionariesTable, usersDictsTable)
+	err := r.db.Get(&dictionary, query, userId, dictId)
+
+	return dictionary, err
+}
