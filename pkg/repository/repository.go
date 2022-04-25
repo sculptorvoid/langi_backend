@@ -11,6 +11,7 @@ type Authorization interface {
 }
 
 type Dictionary interface {
+	CreateDictionary(userId int, dictionary entity.Dictionary) (int, error)
 }
 
 type Word interface {
@@ -25,5 +26,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Dictionary:    NewDictionaryPsql(db),
 	}
 }

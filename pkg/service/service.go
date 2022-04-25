@@ -12,6 +12,7 @@ type Authorization interface {
 }
 
 type Dictionary interface {
+	CreateDictionary(userId int, dictionary entity.Dictionary) (int, error)
 }
 
 type Word interface {
@@ -26,5 +27,6 @@ type Service struct {
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		Dictionary:    NewDictionaryService(repos.Dictionary),
 	}
 }
