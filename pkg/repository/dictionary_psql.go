@@ -78,11 +78,11 @@ func (r *DictionaryPsql) Update(userId, dictId int, input entity.UpdateDictionar
 	query := fmt.Sprintf(`UPDATE %s dicts
  						  SET title = $1
 						  FROM %s userDicts 
-						  WHERE dicts.id = userDicts.dict_id 
-						  AND userDicts.dict_id=$2 
-						  AND userDicts.user_id=$3`, dictionariesTable, usersDictsTable)
+						  WHERE dicts.id = userDicts.dict_id
+						  AND userDicts.user_id=$2
+						  AND userDicts.dict_id=$3`, dictionariesTable, usersDictsTable)
 
-	_, err := r.db.Exec(query, input.Title, dictId, userId)
+	_, err := r.db.Exec(query, input.Title, userId, dictId)
 
 	return err
 }
