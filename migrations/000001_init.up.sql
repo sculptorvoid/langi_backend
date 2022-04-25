@@ -15,7 +15,7 @@ CREATE TABLE dictionaries
 CREATE TABLE words
 (
     id          serial       not null unique,
-    title       varchar(255) not null,
+    word       varchar(255) not null,
     translation varchar(255)
 );
 

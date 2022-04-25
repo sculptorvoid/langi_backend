@@ -19,6 +19,11 @@ type Dictionary interface {
 }
 
 type Word interface {
+	Create(dictId int, word entity.Word) (int, error)
+	GetAll(userId, dictId int) ([]entity.Word, error)
+	GetById(userId, wordId int) (entity.Word, error)
+	Delete(userId, wordId int) error
+	Update(userId, wordId int, input entity.UpdateWordInput) error
 }
 
 type Repository struct {
@@ -31,5 +36,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Dictionary:    NewDictionaryPsql(db),
+		Word:          NewWordPsql(db),
 	}
 }

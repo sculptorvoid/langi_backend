@@ -10,11 +10,11 @@ type Word struct {
 
 type UpdateWordInput struct {
 	Word        *string `json:"word"`
-	Translation *bool   `json:"translation"`
+	Translation *string `json:"translation"`
 }
 
 func (i UpdateWordInput) Validate() error {
-	if i.Word == nil && i.Translation == nil {
+	if i.Word == nil || i.Translation == nil {
 		return errors.New("update word failed: no such values")
 	}
 

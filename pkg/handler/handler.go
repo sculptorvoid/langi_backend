@@ -35,10 +35,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				words.POST("/", h.createWord)
 				words.GET("/", h.getAllWords)
-				words.GET("/:word_id", h.getWordById)
-				words.PUT("/:word_id", h.updateWord)
-				words.DELETE("/:word_id", h.deleteWord)
 			}
+		}
+		words := api.Group("words")
+		{
+			words.GET("/:id", h.getWordById)
+			words.PUT("/:id", h.updateWord)
+			words.DELETE("/:id", h.deleteWord)
 		}
 	}
 

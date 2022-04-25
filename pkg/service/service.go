@@ -20,6 +20,11 @@ type Dictionary interface {
 }
 
 type Word interface {
+	Create(userId, dictId int, word entity.Word) (int, error)
+	GetAll(userId, dictId int) ([]entity.Word, error)
+	GetById(userId, wordId int) (entity.Word, error)
+	Delete(userId, wordId int) error
+	Update(userId, wordId int, input entity.UpdateWordInput) error
 }
 
 type Service struct {
@@ -32,5 +37,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Dictionary:    NewDictionaryService(repos.Dictionary),
+		Word:          NewWordService(repos.Word, repos.Dictionary),
 	}
 }

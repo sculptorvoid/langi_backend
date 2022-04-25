@@ -88,7 +88,7 @@ func (h *Handler) updateDictionary(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Update(userId, id, input); err != nil {
+	if err := h.services.Dictionary.Update(userId, id, input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
