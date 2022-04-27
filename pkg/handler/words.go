@@ -7,6 +7,19 @@ import (
 	"strconv"
 )
 
+// @Summary      createWord
+// @Security     ApiKeyAuth
+// @Tags         Words
+// @Description  creates a word
+// @ID           createWord
+// @Accept       json
+// @Produce      json
+// @Param        input    body      entity.Word  true  "word and translation"
+// @Success      200      {object}  createWordResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict/:id/words [post]
 func (h *Handler) createWord(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -25,18 +38,29 @@ func (h *Handler) createWord(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.Word.Create(userId, dictId, input)
+	wordId, err := h.services.Word.Create(userId, dictId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
+	c.JSON(http.StatusOK, createWordResponse{
+		Id: wordId,
 	})
-
 }
 
+// @Summary      getAllWords
+// @Security     ApiKeyAuth
+// @Tags         Words
+// @Description  return all words in dictionary
+// @ID           getAllWords
+// @Accept       json
+// @Produce      json
+// @Success      200      {object}  getAllWordsResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict/:id/words [get]
 func (h *Handler) getAllWords(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -55,9 +79,24 @@ func (h *Handler) getAllWords(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, words)
+	c.JSON(http.StatusOK, getAllWordsResponse{
+		words,
+	})
 }
 
+// @Summary      getWordById
+// @Security     ApiKeyAuth
+// @Tags         Words
+// @Description  return word by id from dictionary
+// @ID           getWordById
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "word id"
+// @Success      200      {object}  getWordByIdResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/words/:id [get]
 func (h *Handler) getWordById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -76,9 +115,24 @@ func (h *Handler) getWordById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, word)
+	c.JSON(http.StatusOK, getWordByIdResponse{
+		word,
+	})
 }
 
+// @Summary      updateWord
+// @Security     ApiKeyAuth
+// @Tags         Words
+// @Description  update word by id from dictionary
+// @ID           updateWord
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "word id"
+// @Success      200      {object}  updateWordResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/words/:id [put]
 func (h *Handler) updateWord(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -86,7 +140,7 @@ func (h *Handler) updateWord(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	wordId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
@@ -98,14 +152,29 @@ func (h *Handler) updateWord(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Word.Update(userId, id, input); err != nil {
+	if err := h.services.Word.Update(userId, wordId, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{"ok"})
+	c.JSON(http.StatusOK, updateWordResponse{
+		Id: wordId,
+	})
 }
 
+// @Summary      deleteWord
+// @Security     ApiKeyAuth
+// @Tags         Words
+// @Description  delete word by id from dictionary
+// @ID           deleteWord
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "word id"
+// @Success      200      {object}  deleteWordResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/words/:id [delete]
 func (h *Handler) deleteWord(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -124,7 +193,7 @@ func (h *Handler) deleteWord(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{
-		Status: "ok",
+	c.JSON(http.StatusOK, deleteWordResponse{
+		Id: wordId,
 	})
 }

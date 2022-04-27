@@ -7,6 +7,19 @@ import (
 	"strconv"
 )
 
+// @Summary      createDictionary
+// @Security     ApiKeyAuth
+// @Tags         Dictionary
+// @Description  creates an empty dictionary
+// @ID           createDictionary
+// @Accept       json
+// @Produce      json
+// @Param        input    body      entity.Dictionary  true  "credentials"
+// @Success      200      {object}  createDictionaryResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict [post]
 func (h *Handler) createDictionary(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -23,15 +36,23 @@ func (h *Handler) createDictionary(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
+	c.JSON(http.StatusOK, createDictionaryResponse{
+		Id: id,
 	})
 }
 
-type getAllDictsResponce struct {
-	Data []entity.Dictionary `json:"data"`
-}
-
+// @Summary      getAllDictionaries
+// @Security     ApiKeyAuth
+// @Tags         Dictionary
+// @Description  return all dictionaries
+// @ID           getAllDictionaries
+// @Accept       json
+// @Produce      json
+// @Success      200      {string}  []entity.Dictionary
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict [get]
 func (h *Handler) getAllDictionaries(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -44,11 +65,24 @@ func (h *Handler) getAllDictionaries(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllDictsResponce{
+	c.JSON(http.StatusOK, getAllDictionariesResponse{
 		Data: dictionaries,
 	})
 }
 
+// @Summary      getDictionaryById
+// @Security     ApiKeyAuth
+// @Tags         Dictionary
+// @Description  return dictionary by id
+// @ID           getDictionaryById
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "dictionary id"
+// @Success      200      {object}  getDictionaryByIdResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict/:id [get]
 func (h *Handler) getDictionaryById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -67,9 +101,24 @@ func (h *Handler) getDictionaryById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dictionary)
+	c.JSON(http.StatusOK, getDictionaryByIdResponse{
+		dictionary,
+	})
 }
 
+// @Summary      updateDictionary
+// @Security     ApiKeyAuth
+// @Tags         Dictionary
+// @Description  update dictionary by id
+// @ID           updateDictionary
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "dictionary id"
+// @Success      200      {object}  updateDictionaryResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict/:id [put]
 func (h *Handler) updateDictionary(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -93,11 +142,24 @@ func (h *Handler) updateDictionary(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{
-		Status: "ok",
+	c.JSON(http.StatusOK, updateDictionaryResponse{
+		Id: id,
 	})
 }
 
+// @Summary      deleteDictionary
+// @Security     ApiKeyAuth
+// @Tags         Dictionary
+// @Description  delete dictionary by id
+// @ID           deleteDictionary
+// @Accept       json
+// @Produce      json
+// @Param        id       body      int  true  "dictionary id"
+// @Success      200      {object}  deleteDictionaryResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /api/dict/:id [delete]
 func (h *Handler) deleteDictionary(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -116,7 +178,7 @@ func (h *Handler) deleteDictionary(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{
-		Status: "ok",
+	c.JSON(http.StatusOK, deleteDictionaryResponse{
+		Id: id,
 	})
 }

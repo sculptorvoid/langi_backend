@@ -15,9 +15,20 @@ import (
 	"syscall"
 )
 
+// @title                       Langi backend
+// @version                     1.0
+// @description                 Create your own unlimited dictionaries and learn foreign languages
+// @license.name                MIT
+// @license.url                 https://opensource.org/licenses/MIT
+// @host                        localhost:8000
+// @BasePath                    /
+// @securityDefinitions.apikey  ApiKeyAuth
+// @in                          header
+// @name                        Authorization
 func main() {
-
-	if err := initConfig(); err != nil {
+	viper.AddConfigPath("configs")
+	viper.SetConfigName("config")
+	if err := viper.ReadInConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
@@ -60,11 +71,4 @@ func main() {
 	if err := db.Close(); err != nil {
 		logrus.Errorf("error closing database: %s", err.Error())
 	}
-
-}
-
-func initConfig() error {
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
-	return viper.ReadInConfig()
 }

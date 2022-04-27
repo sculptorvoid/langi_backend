@@ -6,6 +6,18 @@ import (
 	"net/http"
 )
 
+// @Summary      registration
+// @Tags         Authorization
+// @Description  create account
+// @ID           registration
+// @Accept       json
+// @Produce      json
+// @Param        input    body       entity.User  true  "account info"
+// @Success      200      {integer}  registrationResponse
+// @Failure      400,404  {object}   errorResponse
+// @Failure      500      {object}   errorResponse
+// @Failure      default  {object}   errorResponse
+// @Router       /auth/registration [post]
 func (h *Handler) registration(c *gin.Context) {
 	var input entity.User
 
@@ -20,8 +32,8 @@ func (h *Handler) registration(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
+	c.JSON(http.StatusOK, registrationResponse{
+		Id: id,
 	})
 }
 
@@ -30,6 +42,18 @@ type loginInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary      login
+// @Tags         Authorization
+// @Description  login into app
+// @ID           login
+// @Accept       json
+// @Produce      json
+// @Param        input    body      loginInput  true  "credentials"
+// @Success      200      {object}  loginResponse
+// @Failure      400,404  {object}  errorResponse
+// @Failure      500      {object}  errorResponse
+// @Failure      default  {object}  errorResponse
+// @Router       /auth/login [post]
 func (h *Handler) login(c *gin.Context) {
 	var input loginInput
 
@@ -44,7 +68,7 @@ func (h *Handler) login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"token": token,
+	c.JSON(http.StatusOK, loginResponse{
+		Token: token,
 	})
 }

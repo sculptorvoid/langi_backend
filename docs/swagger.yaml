@@ -1,0 +1,586 @@
+basePath: /
+definitions:
+  entity.Dictionary:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  entity.User:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - name
+    - password
+    - username
+    type: object
+  entity.Word:
+    properties:
+      id:
+        type: integer
+      translation:
+        type: string
+      word:
+        type: string
+    required:
+    - word
+    type: object
+  handler.createDictionaryResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.createWordResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.deleteDictionaryResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.deleteWordResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.errorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handler.getAllWordsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/entity.Word'
+        type: array
+    type: object
+  handler.getDictionaryByIdResponse:
+    properties:
+      data:
+        $ref: '#/definitions/entity.Dictionary'
+    type: object
+  handler.getWordByIdResponse:
+    properties:
+      data:
+        $ref: '#/definitions/entity.Word'
+    type: object
+  handler.loginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  handler.loginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  handler.updateDictionaryResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.updateWordResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Create your own unlimited dictionaries and learn foreign languages
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Langi backend
+  version: "1.0"
+paths:
+  /api/dict:
+    get:
+      consumes:
+      - application/json
+      description: return all dictionaries
+      operationId: getAllDictionaries
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: getAllDictionaries
+      tags:
+      - Dictionary
+    post:
+      consumes:
+      - application/json
+      description: creates an empty dictionary
+      operationId: createDictionary
+      parameters:
+      - description: credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.createDictionaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: createDictionary
+      tags:
+      - Dictionary
+  /api/dict/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete dictionary by id
+      operationId: deleteDictionary
+      parameters:
+      - description: dictionary id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.deleteDictionaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: deleteDictionary
+      tags:
+      - Dictionary
+    get:
+      consumes:
+      - application/json
+      description: return dictionary by id
+      operationId: getDictionaryById
+      parameters:
+      - description: dictionary id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getDictionaryByIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: getDictionaryById
+      tags:
+      - Dictionary
+    put:
+      consumes:
+      - application/json
+      description: update dictionary by id
+      operationId: updateDictionary
+      parameters:
+      - description: dictionary id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.updateDictionaryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: updateDictionary
+      tags:
+      - Dictionary
+  /api/dict/:id/words:
+    get:
+      consumes:
+      - application/json
+      description: return all words in dictionary
+      operationId: getAllWords
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllWordsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: getAllWords
+      tags:
+      - Words
+    post:
+      consumes:
+      - application/json
+      description: creates a word
+      operationId: createWord
+      parameters:
+      - description: word and translation
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Word'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.createWordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: createWord
+      tags:
+      - Words
+  /api/words/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete word by id from dictionary
+      operationId: deleteWord
+      parameters:
+      - description: word id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.deleteWordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: deleteWord
+      tags:
+      - Words
+    get:
+      consumes:
+      - application/json
+      description: return word by id from dictionary
+      operationId: getWordById
+      parameters:
+      - description: word id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getWordByIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: getWordById
+      tags:
+      - Words
+    put:
+      consumes:
+      - application/json
+      description: update word by id from dictionary
+      operationId: updateWord
+      parameters:
+      - description: word id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.updateWordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: updateWord
+      tags:
+      - Words
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login into app
+      operationId: login
+      parameters:
+      - description: credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.loginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.loginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: login
+      tags:
+      - Authorization
+  /auth/registration:
+    post:
+      consumes:
+      - application/json
+      description: create account
+      operationId: registration
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: registration
+      tags:
+      - Authorization
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

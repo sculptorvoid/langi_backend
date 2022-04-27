@@ -12,7 +12,7 @@ import (
 
 const (
 	salt       = "fkU12(^bs*2lOAxVe*&"
-	signingKey = "dIwwfM^)$&1v<df[KFGqqcoI*d6"
+	signingKey = "dI>wfM)1!$&1v<df[KFGqx45coI*d6"
 	tokenTTL   = 12 * time.Hour
 )
 
