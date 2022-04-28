@@ -1,0 +1,23 @@
+### Registration
+POST http://localhost:8000/auth/registration
+Content-Type: application/json
+
+{
+  "name": "Vasily Pupkin",
+  "username": "test_user",
+  "password": "test_pass"
+}
+
+
+### Login
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "password": "test_pass"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}

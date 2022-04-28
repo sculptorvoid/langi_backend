@@ -1,0 +1,39 @@
+### Create Word
+POST http://localhost:8000/api/dict/{{dict_id}}/words
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "word": "金子",
+  "translation": "gold"
+}
+
+> {%
+    client.global.set("word_id", response.body.id);
+%}
+
+
+### Get all Words
+GET http://localhost:8000/api/dict/{{dict_id}}/words
+Authorization: Bearer {{auth_token}}
+
+
+### Get Word by Id
+GET http://localhost:8000/api/words/{{word_id}}
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+### Update Word by Id
+PUT http://localhost:8000/api/words/{{word_id}}
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "word": "白銀",
+  "translation": "silver"
+}
+
+### Delete Word by Id
+DELETE http://localhost:8000/api/words/{{word_id}}
+Authorization: Bearer {{auth_token}}
