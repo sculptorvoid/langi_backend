@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_PASSWORD=qwerty
+      - DB_PASSWORD=
 
   db:
     restart: always
@@ -17,4 +17,4 @@ services:
     volumes:
       - ./.database/postgres/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_PASSWORD=

@@ -3,20 +3,23 @@
 
 ## Description
 
-Create your own unlimited dictionaries and learn languages or any other things
+The langi app can you help to create dictionaries and words to learn foreign languages. 
 
 * REST API 
 * JWT-based authorization and authentication
 * Clean architecture
-* Postgresql 
+* Postgresql
+* Dockerized
 * Swagger documentation
 * Goland Http client for tests api
 
-## Init
 
-1. create .env file in the root folder
-2. add to .env key DB_PASSWORD="with_your_password_from_postgress"
-3. `docker pull postgres`
-4. `docker run --name=langi-app-db -e POSTGRES_PASSWORD='db_password' -p 5436:5432 -d --rm postgres`
-5. `migrate -path ./migrations -database 'postgres://postgres:db_password@localhost:5436/postgres?sslmode=disable' up`
-6. `go run cmd/main.go`
+## Init and Run
+
+1. Add password in DB_PASSWORD variable to `.env` file and duplicate it in docker-compose.yml in `langi` and `db` sections 
+2. `go mod download`
+3. `docker-compose up --build langi`
+
+## Local Testing
+
+`http` folder contains examples of the requests to API. First, create a user call Registration method, next call Login. Token is will be saved into a global variable. Later you can run any another methods in API, create dictionary or words ex. 
