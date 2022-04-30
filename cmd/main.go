@@ -48,6 +48,11 @@ func main() {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
+	err = repository.MakeMigrations(db)
+	if err != nil {
+		logrus.Fatalf("failed to make migrations db: %s", err.Error())
+	}
+
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
