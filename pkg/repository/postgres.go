@@ -69,7 +69,7 @@ func MakeMigrations(db *sqlx.DB) error {
 		return err
 	}
 	err = m.Up()
-	if err != nil {
+	if err != migrate.ErrNoChange {
 		return err
 	}
 
