@@ -64,7 +64,7 @@ func MakeMigrations(db *sqlx.DB) error {
 	if err != nil {
 		return err
 	}
-	m, err := migrate.NewWithDatabaseInstance("file:///go/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file:///migrations", "postgres", driver)
 	if err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-FROM golang:1.17-buster AS build
+FROM golang:1.18-buster AS build
 
 ENV GOPATH=/
 WORKDIR /src/
@@ -13,6 +13,7 @@ FROM alpine:latest
 # copy go app, config and wait-for-postgres.sh
 COPY --from=build /langi /langi
 COPY ./configs/ /configs/
+COPY ./migrations/ /migrations/
 COPY ./.env ./
 
 # install psql and make wait-for-postgres.sh executable
